@@ -2,16 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout Code') {
+        stage('Install Dependencies') {
             steps {
-                checkout scm
+                sh 'node --version'
+                sh 'npm --version'
+                sh 'npm ci'
             }
         }
 
-        stage('Verify Repository') {
+        stage('Validate Application') {
             steps {
-                sh 'echo "Repository checked out successfully"'
-                sh 'ls -la'
+                sh 'node --check app.js'
+                echo 'Application syntax validation completed!'
             }
         }
     }
