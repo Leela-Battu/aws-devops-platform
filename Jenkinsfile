@@ -16,5 +16,12 @@ pipeline {
                 echo 'Application syntax validation completed!'
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t aws-devops-app:${BUILD_NUMBER} .'
+                sh 'docker images aws-devops-app'
+            }
+        }
     }
 }
