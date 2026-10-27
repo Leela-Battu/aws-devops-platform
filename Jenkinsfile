@@ -53,5 +53,28 @@ pipeline {
                 }
             }
         }
+
+        stage('Test Ansible Connection') {
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'app-ec2-ssh',
+                        keyFileVariable: 'APP_SSH_KEY',
+                        usernameVariable: 'APP_SSH_USER'
+                    )
+                ]) {
+                    sh '''
+                        set +x
+                        trap 'rm -f inventory.ini' EXIT
+
+                        printf '[web]\\n15.207.113.159 ansible_user=%s ansible_ssh_private_key_file=%s\\n' \
+                            "$APP_SSH_USER" "$APP_SSH_KEY" > inventory.ini
+
+                        ANSIBLE_HOST_KEY_CHECKING=False \
+                            ansible -i inventory.ini web -m ansible.builtin.ping
+                    '''
+                }
+            }
+        }
     }
 }
