@@ -23,5 +23,35 @@ pipeline {
                 sh 'docker images aws-devops-app'
             }
         }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-creds',
+                        usernameVariable: 'DOCKERHUB_USERNAME',
+                        passwordVariable: 'DOCKERHUB_TOKEN'
+                    )
+                ]) {
+                    sh '''
+                        set +x
+                        trap 'docker logout >/dev/null 2>&1 || true' EXIT
+
+                        echo "$DOCKERHUB_TOKEN" | docker login \
+                            --username "$DOCKERHUB_USERNAME" \
+                            --password-stdin
+
+                        docker tag aws-devops-app:${BUILD_NUMBER} \
+                            "$DOCKERHUB_USERNAME/aws-devops-app:${BUILD_NUMBER}"
+
+                        docker tag aws-devops-app:${BUILD_NUMBER} \
+                            "$DOCKERHUB_USERNAME/aws-devops-app:latest"
+
+                        docker push "$DOCKERHUB_USERNAME/aws-devops-app:${BUILD_NUMBER}"
+                        docker push "$DOCKERHUB_USERNAME/aws-devops-app:latest"
+                    '''
+                }
+            }
+        }
     }
 }
