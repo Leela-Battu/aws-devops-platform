@@ -67,11 +67,34 @@ pipeline {
                         set +x
                         trap 'rm -f inventory.ini' EXIT
 
-                        printf '[web]\\n15.207.113.159 ansible_user=%s ansible_ssh_private_key_file=%s\\n' \
-                            "$APP_SSH_USER" "$APP_SSH_KEY" > inventory.ini
+                        echo '[web]' > inventory.ini
+                        echo "15.207.113.159 ansible_user=$APP_SSH_USER ansible_ssh_private_key_file=$APP_SSH_KEY" >> inventory.ini
 
                         ANSIBLE_HOST_KEY_CHECKING=False \
                             ansible -i inventory.ini web -m ansible.builtin.ping
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to Application EC2') {
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'app-ec2-ssh',
+                        keyFileVariable: 'APP_SSH_KEY',
+                        usernameVariable: 'APP_SSH_USER'
+                    )
+                ]) {
+                    sh '''
+                        set +x
+                        trap 'rm -f inventory.ini' EXIT
+
+                        echo '[web]' > inventory.ini
+                        echo "15.207.113.159 ansible_user=$APP_SSH_USER ansible_ssh_private_key_file=$APP_SSH_KEY" >> inventory.ini
+
+                        ANSIBLE_HOST_KEY_CHECKING=False \
+                            ansible-playbook -i inventory.ini ansible/deploy.yml
                     '''
                 }
             }
