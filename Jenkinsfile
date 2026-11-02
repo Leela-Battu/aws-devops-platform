@@ -68,7 +68,7 @@ pipeline {
                         trap 'rm -f inventory.ini' EXIT
 
                         echo '[web]' > inventory.ini
-                        echo "15.207.113.159 ansible_user=$APP_SSH_USER ansible_ssh_private_key_file=$APP_SSH_KEY" >> inventory.ini
+                        echo "15.252.108.17 ansible_user=$APP_SSH_USER ansible_ssh_private_key_file=$APP_SSH_KEY" >> inventory.ini
 
                         ANSIBLE_HOST_KEY_CHECKING=False \
                             ansible -i inventory.ini web -m ansible.builtin.ping
