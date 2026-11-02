@@ -11,45 +11,73 @@ Terraform is used to provision the AWS infrastructure.
 ## Architecture
 
 ```text
-                  GitHub Repository
-                         |
-                         v
-                    Jenkins EC2
-                         |
-               Install Dependencies
-                         |
-                         v
-                Validate Application
-                         |
-                         v
+                    GitHub Repository
+                           |
+                           v
+                      Jenkins EC2
+                           |
+                 Install Dependencies
+                           |
+                           v
+                 Validate Application
+                           |
+                           v
                   Build Docker Image
-                         |
-                         v
-                    Docker Hub
-                         |
-                         v
-                 Ansible Deployment
-                         |
-                         v
-                  Application EC2
-                         |
-                         v
-                    Health Check
+                           |
+                           v
+                      Docker Hub
+                           |
+                           v
+                  Ansible Deployment
+                           |
+                           v
+                   Application EC2
+                           |
+                           v
+                      Health Check
 ```
 
 Terraform provisions the AWS infrastructure used by the application and Jenkins.
 
+## Project Screenshots
+
+### 1. Application Output
+
+The Node.js application is deployed successfully on the AWS EC2 instance and accessible through port 3000.
+
+![Application Output](screenshots/application-output.png)
+
+### 2. Jenkins CI/CD Pipeline
+
+The Jenkins pipeline completed successfully, including source code checkout, dependency installation, application validation, Docker image build, Docker Hub push, Ansible connection, and application deployment.
+
+![Jenkins Pipeline Success](screenshots/jenkins-pipeline.png)
+
+### 3. Docker Hub Repository
+
+The application Docker image is published and stored in Docker Hub. The repository contains the image used for application deployment.
+
+**Docker Hub Repository:** [leelabattu/aws-devops-app](https://hub.docker.com/r/leelabattu/aws-devops-app/tags)
+
+![Docker Hub Repository](screenshots/docker-hub.png)
+
+### 4. AWS EC2 Infrastructure
+
+Two EC2 instances are used to host Jenkins and the Node.js application. Both instances are running and passed their AWS status checks.
+
+![AWS EC2 Instances](screenshots/aws-ec2-instances.png)
+
 ## Technologies Used
 
-| Technology      | Purpose                                       |
-| --------------- | --------------------------------------------- |
-| AWS EC2         | Hosts Jenkins and the application             |
-| Terraform       | Infrastructure provisioning                   |
-| Git and GitHub  | Version control and source code management    |
-| Jenkins         | CI/CD automation                              |
-| Docker          | Application containerization                  |
-| Docker Hub      | Docker image storage                          |
-| Ansible         | Automated application deployment              |
+| Technology | Purpose |
+|---|---|
+| AWS EC2 | Hosts Jenkins and the application |
+| Terraform | Infrastructure provisioning |
+| Git and GitHub | Version control and source code management |
+| Jenkins | CI/CD automation |
+| Docker | Application containerization |
+| Docker Hub | Docker image storage |
+| Ansible | Automated application deployment |
 | Node.js and npm | Application runtime and dependency management |
 
 ## Repository Structure
@@ -64,6 +92,11 @@ aws-devops-platform/
 ├── .gitignore
 ├── Jenkinsfile
 ├── README.md
+├── screenshots/
+│   ├── application-output.png
+│   ├── jenkins-pipeline.png
+│   ├── docker-hub.png
+│   └── aws-ec2-instances.png
 ├── ansible/
 │   └── deploy.yml
 └── terraform/
@@ -109,11 +142,11 @@ The deployment playbook is located at `ansible/deploy.yml`.
 
 Ansible connects to the application EC2 instance over SSH and:
 
-* Ensures Docker is running.
-* Pulls the application image from Docker Hub.
-* Creates or recreates the application container.
-* Publishes port `3000`.
-* Checks the application's health endpoint.
+- Ensures Docker is running.
+- Pulls the application image from Docker Hub.
+- Creates or recreates the application container.
+- Publishes port `3000`.
+- Checks the application's health endpoint.
 
 SSH keys and Docker Hub credentials are stored in Jenkins Credentials rather than in the pipeline code.
 
@@ -121,11 +154,11 @@ SSH keys and Docker Hub credentials are stored in Jenkins Credentials rather tha
 
 The Node.js application runs on port `3000`.
 
-| Endpoint   | Purpose                   |
-| ---------- | ------------------------- |
-| `/`        | Application homepage      |
-| `/health`  | Application health status |
-| `/version` | Application version       |
+| Endpoint | Purpose |
+|---|---|
+| `/` | Application homepage |
+| `/health` | Application health status |
+| `/version` | Application version |
 
 The `/health` endpoint is used to verify that the deployed application responds successfully.
 
@@ -169,26 +202,26 @@ docker rm aws-devops-app
 
 ## Security and Best Practices
 
-* Store Docker Hub credentials and SSH private keys in Jenkins Credentials.
-* Never commit passwords, access tokens, private keys, or sensitive Terraform state files to GitHub.
-* Restrict SSH and application access through AWS security groups.
-* Keep the Jenkins dashboard accessible only to authorized users.
-* Verify SSH host keys for secure deployments.
-* Stop unused EC2 instances to reduce running costs.
+- Store Docker Hub credentials and SSH private keys in Jenkins Credentials.
+- Never commit passwords, access tokens, private keys, or sensitive Terraform state files to GitHub.
+- Restrict SSH and application access through AWS security groups.
+- Keep the Jenkins dashboard accessible only to authorized users.
+- Verify SSH host keys for secure deployments.
+- Stop unused EC2 instances to reduce running costs.
 
 ## Key Learnings
 
-* Implemented a Jenkins CI/CD pipeline.
-* Automated Docker image building and publishing.
-* Provisioned AWS infrastructure using Terraform.
-* Automated application deployment using Ansible.
-* Managed deployment credentials through Jenkins.
-* Verified application deployment using health checks.
+- Implemented a Jenkins CI/CD pipeline.
+- Automated Docker image building and publishing.
+- Provisioned AWS infrastructure using Terraform.
+- Automated application deployment using Ansible.
+- Managed deployment credentials through Jenkins.
+- Verified application deployment using health checks.
 
 ## Author
 
 **Leela Battu**
 
-* GitHub Profile: [Leela-Battu](https://github.com/Leela-Battu)
-* Project Repository: [aws-devops-platform](https://github.com/Leela-Battu/aws-devops-platform)
-* Docker Hub: [aws-devops-app](https://hub.docker.com/r/leelabattu/aws-devops-app/tags)
+- GitHub Profile: [Leela-Battu](https://github.com/Leela-Battu)
+- Project Repository: [aws-devops-platform](https://github.com/Leela-Battu/aws-devops-platform)
+- Docker Hub: [aws-devops-app](https://hub.docker.com/r/leelabattu/aws-devops-app/tags)
