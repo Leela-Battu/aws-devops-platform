@@ -45,13 +45,13 @@ Terraform provisions the AWS infrastructure used by the application and Jenkins.
 
 The Node.js application is deployed successfully on the AWS EC2 instance and accessible through port 3000.
 
-![Application Output](screenshots/application-output.png)
+<img width="1157" height="566" alt="Screenshot 2026-10-27 231425" src="https://github.com/user-attachments/assets/4f5e5a00-e224-48e2-88e6-76522f313ca5" />
 
 ### 2. Jenkins CI/CD Pipeline
 
 The Jenkins pipeline completed successfully, including source code checkout, dependency installation, application validation, Docker image build, Docker Hub push, Ansible connection, and application deployment.
 
-![Jenkins Pipeline Success](screenshots/jenkins-pipeline.png)
+<img width="1902" height="906" alt="Screenshot 2026-10-28 145904" src="https://github.com/user-attachments/assets/18e9a3bb-d26c-4632-9dd0-1ff56280e988" />
 
 ### 3. Docker Hub Repository
 
@@ -59,13 +59,13 @@ The application Docker image is published and stored in Docker Hub. The reposito
 
 **Docker Hub Repository:** [leelabattu/aws-devops-app](https://hub.docker.com/r/leelabattu/aws-devops-app/tags)
 
-![Docker Hub Repository](screenshots/docker-hub.png)
+<img width="1890" height="907" alt="Screenshot 2026-10-28 150239" src="https://github.com/user-attachments/assets/93f29ded-1448-447c-af00-942e9eb20ef0" />
 
 ### 4. AWS EC2 Infrastructure
 
 Two EC2 instances are used to host Jenkins and the Node.js application. Both instances are running and passed their AWS status checks.
 
-![AWS EC2 Instances](screenshots/aws-ec2-instances.png)
+<img width="1592" height="741" alt="Screenshot 2026-10-28 150558" src="https://github.com/user-attachments/assets/4f1e1b0b-b403-4771-bc29-7a8b1745fbd9" />
 
 ## Technologies Used
 
