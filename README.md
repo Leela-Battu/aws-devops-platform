@@ -225,3 +225,4 @@ docker rm aws-devops-app
 - GitHub Profile: [Leela-Battu](https://github.com/Leela-Battu)
 - Project Repository: [aws-devops-platform](https://github.com/Leela-Battu/aws-devops-platform)
 - Docker Hub: [aws-devops-app](https://hub.docker.com/r/leelabattu/aws-devops-app/tags)
+- Linkedin: [Leela-Battu](https://www.linkedin.com/in/leela-battu)
