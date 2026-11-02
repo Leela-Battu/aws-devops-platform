@@ -1,0 +1,42 @@
+---
+- name: Deploy Node.js application to AWS EC2
+  hosts: web
+  become: true
+
+  vars:
+    app_image: "leelabattu/aws-devops-app:latest"
+    app_container: "aws-devops-app"
+    app_port: 3000
+
+  tasks:
+    - name: Ensure Docker is running
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Pull the latest application image from Docker Hub
+      community.docker.docker_image:
+        name: "{{ app_image }}"
+        source: pull
+
+    - name: Deploy the application container
+      community.docker.docker_container:
+        name: "{{ app_container }}"
+        image: "{{ app_image }}"
+        state: started
+        restart_policy: unless-stopped
+        published_ports:
+          - "{{ app_port }}:3000"
+        recreate: true
+
+    - name: Verify application health
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ app_port }}/health"
+        method: GET
+        status_code: 200
+        return_content: true
+      register: health_check
+      retries: 5
+      delay: 3
+      until: health_check.status == 200

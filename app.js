@@ -242,7 +242,7 @@ app.get('/', (req, res) => {
     `);
 });
 
-// Health Check
+// Health Check API
 app.get('/health', (req, res) => {
     res.status(200).json({
         status: 'healthy',
@@ -250,7 +250,7 @@ app.get('/health', (req, res) => {
     });
 });
 
-// Application Version
+// Version API
 app.get('/version', (req, res) => {
     res.json({
         application: 'AWS DevOps Platform',
@@ -258,6 +258,7 @@ app.get('/version', (req, res) => {
     });
 });
 
+// Start Server
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`AWS DevOps Platform running on port ${PORT}`);
 });
